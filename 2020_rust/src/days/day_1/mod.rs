@@ -53,3 +53,28 @@ pub fn run(input: AOCInput) -> () {
         println!("Found no solution to part 2 :(");
     }
 }
+
+#[cfg(test)]
+mod tests {
+    extern crate test;
+    use super::*;
+    use test::Bencher;
+
+    #[bench]
+    pub fn bench_parse(b: &mut Bencher) {
+        let data = include_str!("input.txt");
+        b.iter(|| parse(data))
+    }
+
+    #[bench]
+    pub fn bench_part_1(b: &mut Bencher) {
+        let data = include_str!("input.txt");
+        b.iter(|| part_1(data))
+    }
+
+    #[bench]
+    pub fn bench_part_2(b: &mut Bencher) {
+        let data = include_str!("input.txt");
+        b.iter(|| part_2(data))
+    }
+}

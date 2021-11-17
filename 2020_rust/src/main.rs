@@ -1,3 +1,5 @@
+#![feature(test)]
+
 mod config;
 pub mod days;
 
