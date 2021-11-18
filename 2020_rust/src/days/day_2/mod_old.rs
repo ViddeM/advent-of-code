@@ -1,4 +1,3 @@
-use crate::days::common::Day;
 struct Policy {
     min: u32,
     max: u32,
@@ -55,33 +54,66 @@ impl Password {
     }
 }
 
-fn parse<'a>(input: &'a str) -> impl Iterator<Item=Password> + 'a {
-    input
+pub fn parse(input_name: &str) -> Vec<Password> {
+    input_name
         .split("\n")
         .filter(|v| v.is_empty() == false)
         .map(|val| Password::parse(val))
+        .collect()
 }
 
-pub struct Day2 {}
+pub fn part_1(input_name: &str) -> u32 {
+    let data = parse(input_name);
+    data
+        .into_iter()
+        .filter(|p| p.is_valid())
+        .collect::<Vec<Password>>()
+        .len() as u32
+}
 
-impl Day for Day2 {
-    fn parse_bench(&self, input: &str) -> () {
-        parse(input);
+pub fn part_2(input_name: &str) -> u32 {
+    let data = parse(input_name);
+    data
+        .into_iter()
+        .filter(|p| p.is_valid_2())
+        .collect::<Vec<Password>>()
+        .len() as u32
+}
+
+
+pub fn run(input: AOCInput) -> () {
+    let data = match input {
+        AOCInput::Input(input) => input,
+        AOCInput::Test => include_str!("test_input.txt"),
+    };
+
+    let part_one = part_1(data);
+    println!("Solution to part one: {}", part_one);
+    let part_two = part_2(data);
+    println!("Solution to part two: {}", part_two);
+}
+
+#[cfg(test)]
+mod tests {
+    extern crate test;
+    use super::*;
+    use test::Bencher;
+
+    #[bench]
+    pub fn bench_parse(b: &mut Bencher) {
+        let data = include_str!("input.txt");
+        b.iter(|| parse(data))
     }
 
-    fn part_1(&self, input: &str) -> String {
-        let data = parse(input);
-        data
-            .filter(|p| p.is_valid())
-            .collect::<Vec<Password>>()
-            .len().to_string()
+    #[bench]
+    pub fn bench_part_1(b: &mut Bencher) {
+        let data = include_str!("input.txt");
+        b.iter(|| part_1(data))
     }
 
-    fn part_2(&self, input: &str) -> String {
-        let data = parse(input);
-        data
-            .filter(|p| p.is_valid_2())
-            .collect::<Vec<Password>>()
-            .len().to_string()
+    #[bench]
+    pub fn bench_part_2(b: &mut Bencher) {
+        let data = include_str!("input.txt");
+        b.iter(|| part_2(data))
     }
 }
