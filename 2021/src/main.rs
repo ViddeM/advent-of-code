@@ -10,7 +10,7 @@ use std::io::{Read, Write};
 use std::path::Path;
 
 const DEFAULT_DAY: u8 = 2;
-const YEAR: u16 = 2015;
+const YEAR: u16 = 2021;
 
 fn main() {
     let config = Config::new();
