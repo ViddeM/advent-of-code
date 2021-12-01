@@ -29,7 +29,7 @@ impl Day for Day1 {
     fn part_2(&self, input: &str) -> String {
         let nums = parse(input).collect::<Vec<u32>>();
         let mut increased = 0;
-        for (i, num) in nums.iter().enumerate() {
+        for i in 0..nums.len() {
             if i >= 2 {
                 if nums[i] > nums[i - 2] {
                     increased += 1;
