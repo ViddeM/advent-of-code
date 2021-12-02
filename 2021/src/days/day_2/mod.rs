@@ -1,12 +1,6 @@
 use crate::days::common::Day;
 use std::str;
 
-enum Dir {
-    Forward(u32),
-    Down(u32),
-    Up(u32),
-}
-
 fn parse<'a>(input: &'a str) -> impl Iterator<Item=(i32, i32)> + 'a {
     input
         .lines()
@@ -52,8 +46,8 @@ impl Day for Day2 {
     fn part_2(&self, input: &str) -> String {
         let dirs = parse(input);
         let (horizontal, depth, _) = dirs.fold((0, 0, 0), |(sum_h, sum_d, a), (h, d)| {
-            if sum_h != 0 {
-                (sum_h + h, d * a, a)
+            if h != 0 {
+                (sum_h + h, sum_d + h * a, a)
             } else {
                 (sum_h, sum_d, a + d)
             }
