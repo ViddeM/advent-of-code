@@ -1,4 +1,5 @@
 use crate::days::common::Day;
+use std::str;
 
 enum Dir {
     Forward(u32),
@@ -6,17 +7,29 @@ enum Dir {
     Up(u32),
 }
 
-fn parse<'a>(input: &'a str) -> impl Iterator<Item=Dir> + 'a {
+fn parse<'a>(input: &'a str) -> impl Iterator<Item=(i32, i32)> + 'a {
     input
         .lines()
         .map(|v| {
-            let parts: Vec<&str> = v.split(" ").collect();
-            let num = parts[1].parse::<u32>().expect("Fuck buddy");
-            match parts[0] {
-                "forward" => Dir::Forward(num),
-                "down" => Dir::Down(num),
-                "up" => Dir::Up(num),
-                _ => panic!("Invalid dir!")
+            let mut space_index = usize::MAX;
+            {
+                let chars = v.chars();
+                for (i, c) in chars.enumerate() {
+                    if c == ' ' {
+                        space_index = i;
+                    }
+                }
+            }
+
+            let mut chars = v.chars();
+            let first_char = chars.next().unwrap();
+            let num = chars.skip(space_index).collect::<String>().parse::<i32>().unwrap();
+            if first_char == 'd' {
+                (0, num)
+            } else if first_char == 'f' {
+                (num, 0)
+            } else {
+                (0, -num)
             }
         })
 }
@@ -30,35 +43,21 @@ impl Day for Day2 {
 
     fn part_1(&self, input: &str) -> String {
         let dirs = parse(input);
-        let mut horizontal = 0;
-        let mut depth = 0;
-        dirs.for_each(|v| {
-            match v {
-                Dir::Forward(n) => horizontal += n,
-                Dir::Up(n) => depth -= n,
-                Dir::Down(n) => depth += n,
-            };
-        });
-
+        let (horizontal, depth) = dirs
+            .reduce(|(h, d), (sum_h, sum_d)| (sum_h + h, sum_d + d))
+            .expect("Reduce failed");
         (depth * horizontal).to_string()
     }
 
     fn part_2(&self, input: &str) -> String {
         let dirs = parse(input);
-        let mut aim = 0;
-        let mut horizontal = 0;
-        let mut depth = 0;
-        dirs.for_each(|v| {
-            match v {
-                Dir::Forward(n) => {
-                    horizontal += n;
-                    depth += aim * n;
-                },
-                Dir::Up(n) => aim -= n,
-                Dir::Down(n) => aim += n,
+        let (horizontal, depth, _) = dirs.fold((0, 0, 0), |(sum_h, sum_d, a), (h, d)| {
+            if sum_h != 0 {
+                (sum_h + h, d * a, a)
+            } else {
+                (sum_h, sum_d, a + d)
             }
         });
-
         (depth * horizontal).to_string()
     }
 }
