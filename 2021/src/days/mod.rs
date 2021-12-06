@@ -4,6 +4,7 @@ mod day_2;
 mod day_3;
 mod day_4;
 mod day_5;
+mod day_6;
 
 use crate::days::common::Day;
 
@@ -14,6 +15,7 @@ pub fn get_day(day: u8) -> Box<dyn Day> {
         3 => Box::new(day_3::Day3 {}),
         4 => Box::new(day_4::Day4 {}),
         5 => Box::new(day_5::Day5 {}),
+        6 => Box::new(day_6::Day6 {}),
         day => {
             println!("Day not implemented: {}", day);
             panic!("Exiting")
