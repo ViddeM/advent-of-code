@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use crate::days::common::Day;
 use std::fmt::Alignment;
 
