@@ -134,14 +134,12 @@ impl Day for Day13 {
 
         let mut map_str = String::new();
         for (i, c) in map.into_iter().enumerate() {
-            map_str.push(c);
-            if (i as u32) % max_x == 0 && i != 0 {
+            if (i as u32) % max_x == 0 {
                 map_str.push('\n');
             }
+            map_str.push(c);
         }
 
-        println!("Map: \n{}", map_str);
-
-        "".to_string()
+        map_str
     }
 }
