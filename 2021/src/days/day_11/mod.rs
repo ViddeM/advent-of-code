@@ -1,5 +1,4 @@
 use crate::days::common::Day;
-use std::ops::Deref;
 
 struct Cave {
     octopuses: Vec<u8>,
@@ -38,7 +37,7 @@ impl Day for Day11 {
     fn part_1(&self, input: &str) -> String {
         let mut cave = parse(input);
         let mut num_flashes = 0;
-        for step in 1..=100 {
+        for _ in 1..=100 {
             num_flashes += run_step(&mut cave);
         }
         num_flashes.to_string()
@@ -117,6 +116,7 @@ fn to_index(x: i32, y: i32, width: i32) -> usize {
     (x + y * width) as usize
 }
 
+#[allow(dead_code)]
 fn print_cave(cave: &Cave) {
     for y in 0..cave.height {
         let mut row = String::new();

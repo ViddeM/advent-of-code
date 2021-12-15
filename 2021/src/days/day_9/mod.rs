@@ -1,4 +1,3 @@
-use std::ops::Div;
 use crate::days::common::Day;
 
 #[derive(Clone, Debug)]
@@ -16,12 +15,13 @@ fn parse<'a>(input: &'a str) -> World {
         .map(|l| {
             width = l.len();
             l.chars().map(|c| (c as u8) - 48).collect::<Vec<u8>>()
-        }).fold(Vec::new(), |v, ls| {
-        let mut s =v.clone();
-        s.extend(ls.into_iter());
-        height = height + 1;
-        s
-    });
+        })
+        .fold(Vec::new(), |v, ls| {
+            let mut s = v.clone();
+            s.extend(ls.into_iter());
+            height = height + 1;
+            s
+        });
 
     World {
         map: vec,
@@ -50,18 +50,17 @@ impl Day for Day9 {
                 is_smaller_than_neighbours(x, y, &world)
             })
             .map(|(_, i)| i + 1)
-            .fold(0 as u64, |sum, i| sum + (i as u64)).to_string()
+            .fold(0 as u64, |sum, i| sum + (i as u64))
+            .to_string()
     }
 
     fn part_2(&self, input: &str) -> String {
         let world = parse(input);
-        let mut low_spots = find_low_spots(&world);
+        let low_spots = find_low_spots(&world);
 
         let mut low_spot_sizes = low_spots
             .into_iter()
-            .map(|(x, y)| {
-                get_low_spot_size(x, y, &world, &mut Vec::new())
-            })
+            .map(|(x, y)| get_low_spot_size(x, y, &world, &mut Vec::new()))
             .collect::<Vec<u32>>();
         low_spot_sizes.sort();
         low_spot_sizes.reverse();
@@ -100,15 +99,12 @@ fn is_smaller_than_neighbours(x: u32, y: u32, world: &World) -> bool {
 }
 
 fn get_at(x: u32, y: u32, world: &World) -> Option<u8> {
-    if x < 0
-        || y < 0
-        || x >= world.width
-        || y >= world.height {
-        return None
+    if x >= world.width || y >= world.height {
+        return None;
     }
     let index = (x + (y * world.width)) as usize;
     if index >= world.map.len() {
-        return None
+        return None;
     }
     Some(world.map[index])
 }
@@ -140,7 +136,7 @@ fn get_low_spot_size(x: u32, y: u32, world: &World, checked: &mut Vec<u32>) -> u
         Some(v) => {
             let s = v as u32;
             if s == 9 {
-                return 0
+                return 0;
             }
 
             let mut left = 0;

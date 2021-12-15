@@ -1,10 +1,9 @@
-fn parse(input: &str) -> () {
-
-}
+fn parse(input: &str) -> () {}
 
 pub struct Day0 {}
 
 impl Day for Day0 {
+    #[allow(unused_must_use)]
     fn parse_bench(&self, input: &str) -> () {
         parse(input);
     }

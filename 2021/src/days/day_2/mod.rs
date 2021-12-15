@@ -1,36 +1,39 @@
 use crate::days::common::Day;
 use std::str;
 
-fn parse<'a>(input: &'a str) -> impl Iterator<Item=(i32, i32)> + 'a {
-    input
-        .lines()
-        .map(|v| {
-            let mut space_index = usize::MAX;
-            {
-                let chars = v.chars();
-                for (i, c) in chars.enumerate() {
-                    if c == ' ' {
-                        space_index = i;
-                    }
+fn parse<'a>(input: &'a str) -> impl Iterator<Item = (i32, i32)> + 'a {
+    input.lines().map(|v| {
+        let mut space_index = usize::MAX;
+        {
+            let chars = v.chars();
+            for (i, c) in chars.enumerate() {
+                if c == ' ' {
+                    space_index = i;
                 }
             }
+        }
 
-            let mut chars = v.chars();
-            let first_char = chars.next().unwrap();
-            let num = chars.skip(space_index).collect::<String>().parse::<i32>().unwrap();
-            if first_char == 'd' {
-                (0, num)
-            } else if first_char == 'f' {
-                (num, 0)
-            } else {
-                (0, -num)
-            }
-        })
+        let mut chars = v.chars();
+        let first_char = chars.next().unwrap();
+        let num = chars
+            .skip(space_index)
+            .collect::<String>()
+            .parse::<i32>()
+            .unwrap();
+        if first_char == 'd' {
+            (0, num)
+        } else if first_char == 'f' {
+            (num, 0)
+        } else {
+            (0, -num)
+        }
+    })
 }
 
 pub struct Day2 {}
 
 impl Day for Day2 {
+    #[allow(unused_must_use)]
     fn parse_bench(&self, input: &str) -> () {
         parse(input);
     }

@@ -1,14 +1,13 @@
 use crate::days::common::Day;
 
-fn parse<'a>(input: &'a str) -> impl Iterator<Item=u32> + 'a {
-    input
-        .lines()
-        .map(|s| s.parse::<u32>().expect("Fuck buddy"))
+fn parse<'a>(input: &'a str) -> impl Iterator<Item = u32> + 'a {
+    input.lines().map(|s| s.parse::<u32>().expect("Fuck buddy"))
 }
 
 pub struct Day1 {}
 
 impl Day for Day1 {
+    #[allow(unused_must_use)]
     fn parse_bench(&self, input: &str) -> () {
         parse(input);
     }

@@ -8,6 +8,7 @@ fn parse<'a>(input: &'a str) -> impl Iterator<Item = i32> + 'a {
 pub struct Day7 {}
 
 impl Day for Day7 {
+    #[allow(unused_must_use)]
     fn parse_bench(&self, input: &str) -> () {
         parse(input);
     }

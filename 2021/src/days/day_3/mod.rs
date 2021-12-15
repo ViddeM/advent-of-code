@@ -1,10 +1,8 @@
-use std::collections::HashMap;
 use crate::days::common::Day;
+use std::collections::HashMap;
 
-fn parse<'a>(input: &'a str) -> impl Iterator<Item=u32> + 'a {
-    input
-        .lines()
-        .map(|l| u32::from_str_radix(l, 2).unwrap())
+fn parse<'a>(input: &'a str) -> impl Iterator<Item = u32> + 'a {
+    input.lines().map(|l| u32::from_str_radix(l, 2).unwrap())
 }
 
 fn find_bit_counts<'a>(vals: &Vec<u32>, size: u8) -> (HashMap<u8, u32>, usize) {
@@ -29,6 +27,7 @@ fn find_bit_counts<'a>(vals: &Vec<u32>, size: u8) -> (HashMap<u8, u32>, usize) {
 pub struct Day3 {}
 
 impl Day for Day3 {
+    #[allow(unused_must_use)]
     fn parse_bench(&self, input: &str) -> () {
         parse(input);
     }
@@ -51,7 +50,7 @@ impl Day for Day3 {
     }
 
     fn part_2(&self, input: &str) -> String {
-        let mut vals = parse(input).collect::<Vec<u32>>();
+        let vals = parse(input).collect::<Vec<u32>>();
 
         let bits = 12;
         let oxygen_rating = find_oxygen_rating(vals.clone(), bits);
@@ -63,10 +62,13 @@ impl Day for Day3 {
 fn find_oxygen_rating(vals: Vec<u32>, bit: u8) -> u32 {
     let (map, size) = find_bit_counts(&vals, bit);
     let should_be_one = map.get(&bit).unwrap() > &((size as u32) / 2);
-    let new_vals = vals.into_iter().filter(|v| {
-        let is_one = ((v.clone() as u16) >> (bit - 1)) & 1 == 1;
-        should_be_one == is_one
-    }).collect::<Vec<u32>>();
+    let new_vals = vals
+        .into_iter()
+        .filter(|v| {
+            let is_one = ((v.clone() as u16) >> (bit - 1)) & 1 == 1;
+            should_be_one == is_one
+        })
+        .collect::<Vec<u32>>();
 
     if new_vals.len() == 1 {
         new_vals[0]
@@ -80,10 +82,13 @@ fn find_oxygen_rating(vals: Vec<u32>, bit: u8) -> u32 {
 fn find_co2_scrubber_rating(vals: Vec<u32>, bit: u8) -> u32 {
     let (map, size) = find_bit_counts(&vals, bit);
     let should_be_one = map.get(&bit).unwrap() <= &((size as u32) / 2);
-    let new_vals = vals.into_iter().filter(|v| {
-        let is_one = ((v.clone() as u16) >> (bit - 1)) & 1 == 1;
-        should_be_one == is_one
-    }).collect::<Vec<u32>>();
+    let new_vals = vals
+        .into_iter()
+        .filter(|v| {
+            let is_one = ((v.clone() as u16) >> (bit - 1)) & 1 == 1;
+            should_be_one == is_one
+        })
+        .collect::<Vec<u32>>();
 
     if new_vals.len() == 1 {
         new_vals[0]

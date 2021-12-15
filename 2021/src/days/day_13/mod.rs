@@ -1,5 +1,5 @@
 use crate::days::common::Day;
-use std::collections::{HashMap, HashSet};
+use std::collections::HashSet;
 
 #[derive(Clone, Debug)]
 enum FoldDir {

@@ -22,13 +22,12 @@ fn parse(input: &str) -> (Vec<Board>, Vec<u32>) {
                 board = Vec::new();
             }
         } else {
-            board.push(l
-                .split(" ")
-                .filter(|v| v.is_empty() == false)
-                .map(|v|{
-                    (v.parse::<u32>().unwrap(), false)
-                })
-                .collect::<Vec<(u32, bool)>>());
+            board.push(
+                l.split(" ")
+                    .filter(|v| v.is_empty() == false)
+                    .map(|v| (v.parse::<u32>().unwrap(), false))
+                    .collect::<Vec<(u32, bool)>>(),
+            );
         }
     }
     if board.is_empty() == false {
@@ -52,7 +51,7 @@ impl Day for Day4 {
             for mut board in boards.clone().into_iter() {
                 let res = set_true(&mut board, num);
                 if let Some(v) = res {
-                    return (v * num).to_string()
+                    return (v * num).to_string();
                 }
                 new_boards.push(board);
             }
@@ -71,7 +70,7 @@ impl Day for Day4 {
                     None => new_boards.push(board),
                     Some(v) => {
                         if boards.len() == 1 {
-                            return (v * num).to_string()
+                            return (v * num).to_string();
                         }
                     }
                 }
@@ -87,7 +86,7 @@ fn set_true(board: &mut Board, num: u32) -> Option<u32> {
         for (c_i, (v, set)) in row.iter().enumerate() {
             if !set && v.eq(&num) {
                 board[r_i][c_i] = (v.clone(), true);
-                return check_finished(board)
+                return check_finished(board);
             }
         }
     }
@@ -105,20 +104,20 @@ fn check_finished(board: &mut Board) -> Option<u32> {
                 }
             }
         }
-        return Some(sum)
+        return Some(sum);
     }
     None
 }
 
 fn check_rows_finished(board: &mut Board) -> bool {
     for row in board {
-        if row.iter().fold(true, |b, (n, new_b)| {
+        if row.iter().fold(true, |b, (_, new_b)| {
             if b && new_b == &true {
-                return true
+                return true;
             }
-            return false
+            return false;
         }) {
-            return true
+            return true;
         }
     }
 
@@ -131,7 +130,6 @@ fn check_cols_finished(board: &mut Board) -> bool {
         cols_finished.insert(i, true);
     }
 
-
     for row in board {
         for (i_c, (_, set)) in row.iter().enumerate() {
             if !set {
@@ -139,9 +137,10 @@ fn check_cols_finished(board: &mut Board) -> bool {
             }
         }
     }
-    return cols_finished.contains(&true)
+    return cols_finished.contains(&true);
 }
 
+#[allow(dead_code)]
 fn print_board(board: &Board) -> () {
     for row in board {
         println!("{:?}", row)

@@ -1,7 +1,7 @@
 use crate::days::common::Day;
 
 enum LineState {
-    Corrupted(char), // The first illegal character in the line
+    Corrupted(char),    // The first illegal character in the line
     Incomplete(String), // The missing string to complete the string
 }
 
@@ -9,14 +9,14 @@ impl LineState {
     fn is_corrupted(&self) -> bool {
         match self {
             LineState::Corrupted(_) => true,
-            _ => false
+            _ => false,
         }
     }
 
     fn is_incomplete(&self) -> bool {
         match self {
             LineState::Incomplete(_) => true,
-            _ => false
+            _ => false,
         }
     }
 
@@ -35,14 +35,14 @@ impl LineState {
     }
 }
 
-fn parse<'a>(input: &'a str) -> impl Iterator<Item=&str> + 'a {
-    input
-        .lines()
+fn parse<'a>(input: &'a str) -> impl Iterator<Item = &str> + 'a {
+    input.lines()
 }
 
 pub struct Day10 {}
 
 impl Day for Day10 {
+    #[allow(unused_must_use)]
     fn parse_bench(&self, input: &str) -> () {
         parse(input);
     }
@@ -51,17 +51,16 @@ impl Day for Day10 {
         let lines = parse(input);
         let sum = lines
             .map(|l| corrupted_or_incomplete(l))
-            .filter(|v| v.is_corrupted() )
+            .filter(|v| v.is_corrupted())
             .map(|v| v.unwrap_corrupted())
-            .map(|c| {
-                match c {
-                    ')' => 3,
-                    ']' => 57,
-                    '}' => 1197,
-                    '>' => 25137,
-                    _ => panic!("Unexpected char {}", c)
-                }
-            }).fold(0, |sum, num| num + sum);
+            .map(|c| match c {
+                ')' => 3,
+                ']' => 57,
+                '}' => 1197,
+                '>' => 25137,
+                _ => panic!("Unexpected char {}", c),
+            })
+            .fold(0, |sum, num| num + sum);
 
         sum.to_string()
     }
@@ -70,22 +69,20 @@ impl Day for Day10 {
         let lines = parse(input);
         let mut scores: Vec<u64> = lines
             .map(|l| corrupted_or_incomplete(l))
-            .filter(|v| v.is_incomplete() )
+            .filter(|v| v.is_incomplete())
             .map(|v| v.unwrap_incomplete())
             .map(|s| {
-                s
-                    .chars()
-                    .map(| c| {
-                        match c {
-                            ')' => 1,
-                            ']' => 2,
-                            '}' => 3,
-                            '>' => 4,
-                            _ => panic!("Invalid {}", c)
-                        }
+                s.chars()
+                    .map(|c| match c {
+                        ')' => 1,
+                        ']' => 2,
+                        '}' => 3,
+                        '>' => 4,
+                        _ => panic!("Invalid {}", c),
                     })
                     .fold(0, |sum, val| sum * 5 + val)
-            }).collect();
+            })
+            .collect();
         scores.sort();
         scores[(scores.len() - 1) / 2].to_string()
     }
@@ -97,19 +94,17 @@ fn corrupted_or_incomplete(line: &str) -> LineState {
     for c in line.chars() {
         match c {
             '{' | '[' | '(' | '<' => stack.push(c),
-            '}' | ']' | ')' | '>' => {
-                match stack.last() {
-                    Some(other) => {
-                        if compare_bracket_pair(*other, c) {
-                            stack.pop();
-                        } else {
-                            return LineState::Corrupted(c)
-                        }
-                    },
-                    None => return LineState::Corrupted(c)
+            '}' | ']' | ')' | '>' => match stack.last() {
+                Some(other) => {
+                    if compare_bracket_pair(*other, c) {
+                        stack.pop();
+                    } else {
+                        return LineState::Corrupted(c);
+                    }
                 }
+                None => return LineState::Corrupted(c),
             },
-            uk => panic!("Unknown character received! {}", uk)
+            uk => panic!("Unknown character received! {}", uk),
         }
     }
 
@@ -120,7 +115,7 @@ fn corrupted_or_incomplete(line: &str) -> LineState {
             '[' => remaining.push(']'),
             '(' => remaining.push(')'),
             '<' => remaining.push('>'),
-            _ => panic!("Unknown smth: {}", a)
+            _ => panic!("Unknown smth: {}", a),
         }
     }
     LineState::Incomplete(remaining)
@@ -132,6 +127,6 @@ fn compare_bracket_pair(open: char, close: char) -> bool {
         '[' => return close == ']',
         '<' => return close == '>',
         '(' => return close == ')',
-        _ => panic!("The fuck?? {}", open)
+        _ => panic!("The fuck?? {}", open),
     }
 }

@@ -1,5 +1,4 @@
 use crate::days::common::Day;
-use std::fmt::Alignment;
 
 const NUMBERS: usize = 9;
 
@@ -24,7 +23,7 @@ impl Day for Day6 {
         let mut fishes_arr = parse(input);
 
         for day in 1..80 {
-            let zero_index = (day % NUMBERS);
+            let zero_index = day % NUMBERS;
             let six_index = (zero_index + 7) % NUMBERS;
             fishes_arr[six_index] = fishes_arr[six_index] + fishes_arr[zero_index];
         }
@@ -36,7 +35,7 @@ impl Day for Day6 {
         let mut fishes_arr = parse(input);
 
         for day in 1..256 {
-            let zero_index = (day % NUMBERS);
+            let zero_index = day % NUMBERS;
             let six_index = (zero_index + 7) % NUMBERS;
             fishes_arr[six_index] = fishes_arr[six_index] + fishes_arr[zero_index];
         }
@@ -45,6 +44,7 @@ impl Day for Day6 {
     }
 }
 
+#[allow(dead_code)]
 fn print_arr(zero_index: usize, arr: [u64; NUMBERS]) -> String {
     let mut a = String::new();
     for i in 0..NUMBERS {

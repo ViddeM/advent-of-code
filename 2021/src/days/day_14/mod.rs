@@ -47,10 +47,13 @@ impl Day for Day14 {
         }
 
         let map = polymer.into_iter().fold(HashMap::new(), |mut map, c| {
-            match map.get(&c) {
-                Some(v) => map.insert(c, v + 1),
-                None => map.insert(c, 1),
-            };
+            map.insert(
+                c,
+                match map.get(&c) {
+                    Some(v) => v + 1,
+                    None => 1,
+                },
+            );
             map
         });
 
@@ -77,15 +80,18 @@ impl Day for Day14 {
         let mut polymer_map: HashMap<(char, char), u64> = HashMap::new();
         for i in 0..(polymer.len() - 1) {
             let pair = (polymer[i], polymer[i + 1]);
-            match polymer_map.get(&pair) {
-                None => polymer_map.insert(pair, 1),
-                Some(v) => polymer_map.insert(pair, v + 1),
-            };
+            polymer_map.insert(
+                pair,
+                match polymer_map.get(&pair) {
+                    None => 1,
+                    Some(v) => v + 1,
+                },
+            );
         }
 
         let mut start_pair = (polymer[0], polymer[1]);
 
-        for step in 1..=40 {
+        for _ in 1..=40 {
             let mut new_map = polymer_map.clone();
             for (c, c2) in polymer_map.clone().keys() {
                 let orig_pair = (*c, *c2);
@@ -93,10 +99,11 @@ impl Day for Day14 {
                 for (b1, b2, res) in transformations.iter() {
                     if *c == *b1 && *c2 == *b2 {
                         if let Some(v) = new_map.get(&orig_pair) {
-                            if *v <= *orig_pair_count {
+                            let vc = v.clone();
+                            if vc <= *orig_pair_count {
                                 new_map.remove(&orig_pair);
                             } else {
-                                new_map.insert(orig_pair, v - orig_pair_count);
+                                new_map.insert(orig_pair, vc - orig_pair_count);
                             }
                         }
 
@@ -107,15 +114,21 @@ impl Day for Day14 {
 
                         let pair_b = (*res, *c2);
 
-                        match new_map.get(&pair_a) {
-                            Some(v) => new_map.insert(pair_a, v + orig_pair_count),
-                            None => new_map.insert(pair_a, *orig_pair_count),
-                        };
+                        new_map.insert(
+                            pair_a,
+                            match new_map.get(&pair_a) {
+                                Some(v) => v + orig_pair_count,
+                                None => *orig_pair_count,
+                            },
+                        );
 
-                        match new_map.get(&pair_b) {
-                            Some(v) => new_map.insert(pair_b, v + orig_pair_count),
-                            None => new_map.insert(pair_b, *orig_pair_count),
-                        };
+                        new_map.insert(
+                            pair_b,
+                            match new_map.get(&pair_b) {
+                                Some(v) => v + orig_pair_count,
+                                None => *orig_pair_count,
+                            },
+                        );
                     }
                 }
             }
@@ -123,20 +136,26 @@ impl Day for Day14 {
             polymer_map = new_map;
         }
 
-        let mut map = polymer_map
+        let map = polymer_map
             .into_iter()
             .fold(HashMap::new(), |mut map, ((c1, c2), v)| {
                 if (c1, c2) == start_pair {
-                    match map.get(&c1) {
-                        Some(v2) => map.insert(c1, v2 + 1),
-                        None => map.insert(c1, 1),
-                    };
+                    map.insert(
+                        c1,
+                        match map.get(&c1) {
+                            Some(v2) => v2 + 1,
+                            None => 1,
+                        },
+                    );
                 }
 
-                match map.get(&c2) {
-                    Some(v2) => map.insert(c2, v + v2),
-                    None => map.insert(c2, v),
-                };
+                map.insert(
+                    c2,
+                    match map.get(&c2) {
+                        Some(v2) => v + v2,
+                        None => v,
+                    },
+                );
                 map
             });
 

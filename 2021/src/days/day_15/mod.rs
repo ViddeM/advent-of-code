@@ -50,7 +50,7 @@ fn parse(input: &str) -> World {
             m
         });
 
-    let height = (map.len() as u64 / width);
+    let height = map.len() as u64 / width;
 
     World { map, width, height }
 }
@@ -200,6 +200,7 @@ fn get_new_world(world: World) -> World {
     }
 }
 
+#[allow(dead_code)]
 fn print_path(path: HashMap<Pos, Pos>, last: &Pos) {
     let mut c = path.get(last);
     while let Some(pos) = c {
@@ -208,6 +209,7 @@ fn print_path(path: HashMap<Pos, Pos>, last: &Pos) {
     }
 }
 
+#[allow(dead_code)]
 fn print_world(world: &World) {
     for y in 0..world.height {
         let mut s = String::new();
