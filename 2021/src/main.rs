@@ -90,7 +90,7 @@ mod test {
     use crate::config::Config;
     use crate::days::common::Day;
     use crate::days::get_day;
-    use crate::get_input;
+    use crate::get_inputs;
     use std::env;
     use test::Bencher;
 
