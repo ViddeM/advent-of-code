@@ -7,6 +7,7 @@ mod day_13;
 mod day_14;
 mod day_15;
 mod day_16;
+mod day_17;
 mod day_2;
 mod day_3;
 mod day_4;
@@ -36,6 +37,7 @@ pub fn get_day(day: u8) -> Box<dyn Day> {
         14 => Box::new(day_14::Day14 {}),
         15 => Box::new(day_15::Day15 {}),
         16 => Box::new(day_16::Day16 {}),
+        17 => Box::new(day_17::Day17 {}),
         day => {
             println!("Day not implemented: {}", day);
             panic!("Exiting")
