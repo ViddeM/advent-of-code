@@ -8,3 +8,6 @@
 [submodule "2024/advent-of-code-2024"]
 	path = 2024/advent-of-code-2024
 	url = git@github.com:viddem/advent-of-code-2024
+[submodule "2025/advent-of-code-2025"]
+	path = 2025/advent-of-code-2025
+	url = git@github.com:viddem/advent-of-code-2025
